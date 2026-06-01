@@ -1,153 +1,38 @@
+                {% extends 'blog/base.html' %}
+
+{% load static %}
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>윤동주 - 자화상</title>
-    <style>
-        /* 기본 스타일 초기화 및 한글 폰트 설정 */
-        body {
-            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
-            line-height: 1.8;
-            color: #333;
-            margin: 20px;
-            padding: 0;
-        }
-
-        /* 1. 헤더 영역 */
-        header h1 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        /* 가이드라인: 10pixel 두께의 회색 바 */
-        .top-bar {
-            width: 100%;
-            height: 10px;
-            background-color: #888888;
-            margin-bottom: 30px;
-        }
-
-        /* 2. 섹션 영역 (시 본문) */
-        .poem-section {
-            text-align: center; /* 시 제목과 구분선은 가운데 정렬 유지 */
-            margin-bottom: 40px;
-        }
-
-        .poem-section h2 {
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
-
-        .poem-section h3 {
-            font-size: 16px;
-            font-weight: normal;
-            margin-top: 0;
-            margin-bottom: 15px;
-        }
-
-        /* 가이드라인: 50% 너비의 중앙 정렬 구분선 */
-        .half-line {
-            width: 50%;
-            border: 0;
-            height: 1px;
-            background-color: #ccc;
-            margin: 0 auto 30px auto;
-        }
-
-        /* 본문을 왼쪽으로 완전히 몰아두기 위한 스타일 수정 */
-        .poem-body {
-            text-align: left; /* 텍스트 왼쪽 정렬 */
-            width: 100%;     /* 전체 너비를 차지하여 왼쪽으로 밀착 */
-        }
-
-        .poem-body p {
-            margin-bottom: 12px;
-            font-size: 15px;
-        }
-
-        /* 3. 어사이드 영역 (다른 시 목록) */
-        .other-poems {
-            margin-bottom: 40px;
-        }
-
-        .other-poems h2 {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .other-poems ul {
-            list-style-type: disc;
-            padding-left: 20px;
-        }
-
-        .other-poems li {
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-
-        /* 4. 푸터 영역 */
-        .footer-line {
-            border: 0;
-            height: 1px;
-            background-color: #ccc;
-            margin-bottom: 15px;
-        }
-
-        footer p {
-            font-size: 14px;
-            color: #555;
-            margin: 0;
-        }
-    </style>
+    <title>Django Girls Blog</title>
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
 </head>
 <body>
+    <div class="page-header">
+        <h1><a href="/">Django Girls Blog</a></h1>
+    </div>
 
-    <header>
-        <h1>자화상 - 윤동주</h1>
-        <div class="top-bar"></div>
-    </header>
-
-    <section class="poem-section">
-        <h2>&lt; 자화상 &gt;</h2>
-        <h3>윤동주</h3>
-        
-        <hr class="half-line">
-
-        <div class="poem-body">
-            <p>산모퉁이를 돌아 논가 외딴 우물을 홀로 찾아가선 가만히 들여다봅니다.</p>
-            <p>우물 속에는 달이 밝고 구름이 흐르고 하늘이 펼치고 파아란 바람이 불고 가을이 있습니다.</p>
-            <p>그리고 한 사나이가 있습니다.</p>
-            <p>어쩐지 그 사나이가 미워져 돌아갑니다.</p>
-            <p>돌아가다 생각하니 그 사나이가 가여워집니다. 도로 가 들여다보니 사나이는 그대로 있습니다.</p>
-            <p>다시 그 사나이가 미워져 돌아갑니다.</p>
-            <p>돌아가다 생각하니 그 사나이가 그리워집니다.</p>
-            <p>우물 속에는 달이 밝고 구름이 흐르고 하늘이 펼치고 파아란 바람이 불고 가을이 있고 추억처럼 사나이가 있습니다.</p>
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-8">
+                {% block content %}
+                    {% for post in posts %}
+                    <div class="post">
+                        <div class="date">
+                            <p>published: {{ post.published_date }}</p>
+                        </div>
+                        <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+                    </div>
+                {% empty %}
+                    <p>아직 작성된 게시글이 없습니다.</p>
+                {% endfor %}
+                {% endblock %}
+            </div>
         </div>
-    </section>
-
-    <aside class="other-poems">
-        <h2>윤동주 시인의 다른 시</h2>
-        <ul>
-            <li>서시</li>
-            <li>자화상</li>
-            <li>눈오는 지도</li>
-            <li>새로운 길</li>
-            <li>길</li>
-            <li>별 헤는 밤</li>
-            <li>쉽게 씌어진 시</li>
-            <li>참회록</li>
-            <li>못 자는 밤</li>
-            <li>비오는 밤</li>
-            <li>소낙비</li>
-        </ul>
-    </aside>
-
-    <footer>
-        <hr class="footer-line">
-        <p>&copy;웹서비스프로그래밍 &reg;2020</p>
-    </footer>
-
+    </div>
 </body>
 </html>
